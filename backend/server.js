@@ -17,13 +17,59 @@ const client = new OpenAI({
 const BUFFER_ENDPOINT =
   "https://api.buffer.com/graphql";
 
+
+async function getOrganizationId() {
+  const query = `
+    query GetOrganizations {
+      account {
+        organizations {
+          id
+          name
+        }
+      }
+    }
+  `;
+
+  const response = await fetch(BUFFER_ENDPOINT, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.BUFFER_API_KEY}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ query })
+  });
+
+  const data = await response.json();
+
+  if (data.errors) {
+    throw new Error(
+      JSON.stringify(data.errors)
+    );
+  }
+
+  const organizations =
+    data.data.account.organizations;
+
+  if (!organizations.length) {
+    throw new Error(
+      "No organizations found"
+    );
+  }
+
+  return organizations[0];
+}
+
 async function getBufferPosts() {
+  const organizationId =
+  await getOrganizationId();
+
+  console.log("Organization ID:", organizationId);
   const query = `
   query {
     posts(
       first: 10
       input: {
-        organizationId: "${process.env.BUFFER_ORGANIZATION_ID}"
+        organizationId: "${organizationId.id}"
         filter: {
           status: [sent]
         }
@@ -46,6 +92,9 @@ async function getBufferPosts() {
     }
   }
   `;
+
+
+
 
   const response = await fetch(BUFFER_ENDPOINT, {
     method: "POST",
@@ -136,7 +185,7 @@ app.post("/analyze", async (req, res) => {
 
 const completion =
   await client.chat.completions.create({
-    model: "deepseek/deepseek-chat-v3-0324",
+    model: `${process.env.OPENROUTER_MODEL}`,
     messages: [
       {
         role: "user",
