@@ -1,67 +1,96 @@
 # Buffer Insight Engine
 
-Turn Buffer analytics into actionable content recommendations.
+A simple AI-powered tool built on top of the Buffer GraphQL API.
+
+The goal is straightforward:
+
+> Instead of just showing analytics, help creators understand what they should post next.
+
+The application fetches recent Buffer posts and performance metrics, analyzes them using an LLM, and generates actionable content recommendations backed by engagement data.
 
 ## Why?
 
-Buffer provides excellent publishing and analytics tools, but creators still need to answer an important question:
+Buffer provides great publishing and analytics capabilities, but many creators still spend time figuring out:
 
-**"What should I post next?"**
+* Which topics perform best?
+* What content should I create next?
+* What opportunities am I missing?
 
-Buffer Insight Engine is a small experiment built on top of Buffer's GraphQL API that transforms post history and analytics into evidence-backed content recommendations using AI.
+This project explores how AI can bridge the gap between analytics and action.
 
-## Features
+## Motivation
 
-* Fetch posts from Buffer using the GraphQL API
-* Analyze posting history and engagement trends
-* Identify high-performing content themes
-* Suggest future content ideas
-* Recommend optimal posting times
-* Explain recommendations with supporting evidence
+I built this project to experiment with Buffer's public GraphQL API and explore practical AI use cases for content creators.
 
-## Architecture
+## Tech Stack
 
-Frontend:
+### Frontend
 
 * HTML
 * CSS
 * JavaScript
 
-Backend:
+### Backend
 
 * Node.js
 * Express
 
-AI:
-
-* Google Gemini
-
-Data Source:
+### APIs
 
 * Buffer GraphQL API
+* OpenRouter
 
-## Flow
+## Setup
 
-Buffer API → Content Analysis → Gemini → Recommendations
+### Prerequisites
 
-## Example Output
+* Node.js installed
+* Buffer Personal API Key
+* OpenRouter API Key
 
-Best Topic:
-Backend Engineering
+### 1. Clone the Repository
 
-Best Posting Time:
-9:00 AM
+```bash
+git clone <repo-url>
+cd buffer-insight-engine
+```
 
-Recommended Posts:
+### 2. Configure Environment Variables
 
-* Kafka Retry Strategies
-* Redis Memory Optimization
-* BullMQ Dead Letter Queues
+Inside the `backend` folder create a `.env` file based on `.env.example`.
 
-Evidence:
+Example:
 
-Kafka-related posts generated 2.3x higher engagement than the account average.
+```env
+BUFFER_API_KEY=your_buffer_api_key
+OPENROUTER_API_KEY=your_openrouter_api_key
+```
 
-## Motivation
+### 3. Install Dependencies
 
-This project was built as an exploration of Buffer's newly released public API and to investigate how AI can help creators move from analytics to action.
+```bash
+cd backend
+npm install
+```
+
+### 4. Start the Backend
+
+```bash
+npm start
+```
+
+The server will start on:
+
+```text
+http://localhost:3000
+```
+
+### 5. Launch the Frontend
+
+Open the `index.html` file from the `frontend` folder in your browser.
+
+That's it.
+
+## Feedback
+
+If you have ideas, suggestions, or improvements, feel free to open an issue or reach out.
